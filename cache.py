@@ -158,7 +158,7 @@ class Cache:
 class App(ctk.CTk):
     def __init__(self):
         super().__init__()
-        self.title("Cache Simulator (FIFO / LRU + Types)")
+        self.title("Cache Simulator")
         self.geometry("900x600")  
 
         self.addresses = []
@@ -223,8 +223,8 @@ class App(ctk.CTk):
         hex_toggle_frame = ctk.CTkFrame(config_frame, fg_color="transparent")
         hex_toggle_frame.grid(row=5, column=1, padx=5, pady=5, sticky="w")
         
-        self.hex_switch = ctk.CTkSwitch(hex_toggle_frame, text="Hex Input", variable=self.hex_mode, 
-                                        command=self.toggle_hex_mode)
+        ctk.CTkLabel(hex_toggle_frame, text="Decimal").pack(side="left", padx=(0, 5))
+        self.hex_switch = ctk.CTkSwitch(hex_toggle_frame, text="Hex", variable=self.hex_mode, command=self.toggle_hex_mode)
         self.hex_switch.pack(side="left")
         
         address_frame = ctk.CTkFrame(self.left_frame)

@@ -199,10 +199,11 @@ class App(ctk.CTk):
         ctk.CTkLabel(config_frame, text="Cache Configuration", font=("Arial", 16, "bold")).grid(
             row=0, column=0, columnspan=2, pady=(5, 15), sticky="w")
 
-        ctk.CTkLabel(config_frame, text="Replacement Policy:").grid(row=1, column=0, padx=5, pady=5, sticky="e")
-        policy_menu = ctk.CTkOptionMenu(config_frame, variable=self.policy, values=["FIFO", "LRU"], 
+        self.policy_label = ctk.CTkLabel(config_frame, text="Replacement Policy:")
+        self.policy_label.grid(row=1, column=0, padx=5, pady=5, sticky="e")
+        self.policy_menu = ctk.CTkOptionMenu(config_frame, variable=self.policy, values=["FIFO", "LRU"], 
                                      command=self.on_config_change)
-        policy_menu.grid(row=1, column=1, padx=5, pady=5, sticky="w")
+        self.policy_menu.grid(row=1, column=1, padx=5, pady=5, sticky="w")
         
         ctk.CTkLabel(config_frame, text="Cache Type:").grid(row=2, column=0, padx=5, pady=5, sticky="e")
         type_menu = ctk.CTkOptionMenu(config_frame, variable=self.cache_type, 
@@ -290,12 +291,21 @@ class App(ctk.CTk):
         self.create_new_cache()
 
     def on_type_change(self, choice=None):
-        if choice == "Set Associative" or self.cache_type.get() == "Set Associative":
+        selected_type = choice or self.cache_type.get()
+
+        if selected_type == "Set Associative":
             self.set_label.grid(row=4, column=0, padx=5, pady=5, sticky="e")
             self.set_entry.grid(row=4, column=1, padx=5, pady=5, sticky="w")
         else:
             self.set_label.grid_forget()
             self.set_entry.grid_forget()
+        
+        if selected_type == "Direct Mapped":
+            self.policy_label.grid_forget()
+            self.policy_menu.grid_forget()
+        else:
+            self.policy_label.grid(row=1, column=0, padx=5, pady=5, sticky="e")
+            self.policy_menu.grid(row=1, column=1, padx=5, pady=5, sticky="w")
         self.create_new_cache()
 
     def on_config_change(self, *args):
